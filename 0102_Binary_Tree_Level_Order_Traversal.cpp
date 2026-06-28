@@ -1,36 +1,33 @@
+#include <iostream>
 #include <vector>
 #include <queue>
 using namespace std;
+
+// Definition for a binary tree node.
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+
+    TreeNode(int x, TreeNode *left, TreeNode *right)
+        : val(x), left(left), right(right) {}
+};
 
 /*
 LeetCode 102 - Binary Tree Level Order Traversal
 
 Approach:
 - Use Breadth-First Search (BFS) with a queue.
-- Push the root node into the queue.
-- For each level:
-    - Store the current queue size.
-    - Process exactly that many nodes.
-    - Add their values to the current level.
-    - Push their left and right children into the queue.
-- Add each completed level to the final answer.
+- Process one level at a time.
+- Store each level in a separate vector.
 
 Time Complexity: O(n)
 Space Complexity: O(n)
 */
-
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right)
- *         : val(x), left(left), right(right) {}
- * };
- */
 
 class Solution {
 public:
@@ -57,11 +54,11 @@ public:
 
                 level.push_back(node->val);
 
-                if (node->left) {
+                if (node->left != nullptr) {
                     q.push(node->left);
                 }
 
-                if (node->right) {
+                if (node->right != nullptr) {
                     q.push(node->right);
                 }
             }
@@ -72,3 +69,31 @@ public:
         return ans;
     }
 };
+
+int main() {
+
+    // Creating the tree:
+    //        3
+    //       / \
+    //      9   20
+    //         /  \
+    //        15   7
+
+    TreeNode* root = new TreeNode(3);
+    root->left = new TreeNode(9);
+    root->right = new TreeNode(20);
+    root->right->left = new TreeNode(15);
+    root->right->right = new TreeNode(7);
+
+    Solution obj;
+    vector<vector<int>> ans = obj.levelOrder(root);
+
+    for (auto level : ans) {
+        for (int x : level) {
+            cout << x << " ";
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
